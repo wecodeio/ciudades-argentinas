@@ -3,10 +3,11 @@
 require "open-uri"
 require "json"
 require "nokogiri"
+require "titleize"
 
 class Ciudad < Struct.new(:id, :nombre)
   def to_h
-    { id: id, nombre: nombre }
+    { id: id, nombre: nombre.titleize }
   end
 end
 
@@ -15,7 +16,7 @@ class Provincia
   attr_writer :ciudades
 
   def initialize(id, nombre)
-    @id, @nombre = id.to_i, nombre
+    @id, @nombre = id.to_i, nombre.titleize
     @ciudades = []
   end
 
