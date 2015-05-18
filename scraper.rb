@@ -4,7 +4,17 @@ require "open-uri"
 require "json"
 require "nokogiri"
 
-class Ciudad < Struct.new(:id, :nombre)
+def titleize(string)
+  string.gsub("Ñ", "ñ").gsub(/\b([A-ZÁÉÍÓÚ])([A-ZÁÉÍÓÚñ]+)/) { "#{$1}#{$2.downcase}" }
+end
+
+class Ciudad
+  attr_reader :id, :nombre
+
+  def initialize(id, nombre)
+    @id, @nombre = id, titleize(nombre)
+  end
+
   def to_h
     { id: id, nombre: nombre }
   end
@@ -15,7 +25,7 @@ class Provincia
   attr_writer :ciudades
 
   def initialize(id, nombre)
-    @id, @nombre = id.to_i, nombre
+    @id, @nombre = id.to_i, titleize(nombre)
     @ciudades = []
   end
 
